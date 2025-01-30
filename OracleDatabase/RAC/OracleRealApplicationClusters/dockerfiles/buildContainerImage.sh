@@ -6,7 +6,7 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 #
-# Copyright (c) 2014,2021 Oracle and/or its affiliates.
+# Copyright (c) 2014-2024 Oracle and/or its affiliates. All rights reserved.
 #
 
 usage() {
@@ -24,7 +24,7 @@ Parameters:
 
 LICENSE UPL 1.0
 
-Copyright (c) 2014,2021 Oracle and/or its affiliates.
+Copyright (c) 2014-2024 Oracle and/or its affiliates. All rights reserved.
 
 EOF
   exit 0
@@ -92,7 +92,11 @@ while getopts "hiv:o:pn:" optname; do
       ;;
   esac
 done
-
+# Automatically set SKIPMD5=1 if SLIMMING=true is passed in DOCKEROPS
+if [[ "$DOCKEROPS" == *"--build-arg SLIMMING=true"* ]]; then
+  SKIPMD5=1
+  echo "SLIMMING=true detected, SKIPMD5 is automatically set to 1."
+fi
 # Oracle Database Image Name
 if [ "${IMAGE_NAME}"x = "x" ] && [ "${SLIM}" == "true" ]; then
    IMAGE_NAME="oracle/database-rac:${VERSION}-slim"
